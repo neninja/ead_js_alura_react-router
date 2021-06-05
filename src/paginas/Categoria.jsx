@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Route, useParams, useRouteMatch } from 'react-router-dom'
+import { busca } from '../api/api'
 import { ListaCategorias } from '../components/ListaCategorias'
 import { ListaPost } from '../components/ListaPost'
 import '../assets/css/blog.css'
@@ -7,7 +8,13 @@ import '../assets/css/blog.css'
 const Categoria = () => {
   const { id } = useParams()
   const { path } = useRouteMatch()
+  const [ subCategoria, setSubCategoria ] = useState([])
 
+  useEffect(() => {
+    busca(`/categorias/${id}`, (categoria) => {
+      setSubCategoria(categoria.subcategorias)
+    })
+  }, [id])
   return(
     <>
       <div className="container">
